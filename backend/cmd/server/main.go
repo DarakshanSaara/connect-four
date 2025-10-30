@@ -27,10 +27,12 @@ type Server struct {
 }
 
 func NewServer() *Server {
-	// Initialize database
+	// Get database URL from environment (Render provides this)
 	connStr := os.Getenv("DATABASE_URL")
 	if connStr == "" {
+		// Fallback for local development
 		connStr = "postgres://user:password@localhost:5432/connectfour?sslmode=disable"
+		log.Printf("Using local database: %s", connStr)
 	}
 
 	store, err := database.NewPostgresStore(connStr)
@@ -40,11 +42,13 @@ func NewServer() *Server {
 	} else {
 		if err := store.Init(); err != nil {
 			log.Printf("Warning: Could not initialize database: %v", err)
+		} else {
+			log.Printf("✅ Database connected successfully")
 		}
 	}
 
 	return &Server{
-		hub:   websockethub.NewHub(),  // Use websockethub
+		hub:   websockethub.NewHub(),
 		store: store,
 	}
 }
@@ -133,10 +137,11 @@ func main() {
 	// Start WebSocket hub
 	go server.hub.Run()
 
-	// Setup CORS
+	// Setup CORS for production - allow all origins
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE"},
+		AllowedMethods: []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders: []string{"*"},
 	})
 
 	// Routes
@@ -145,13 +150,16 @@ func main() {
 	http.Handle("/game/create", c.Handler(http.HandlerFunc(server.handleCreateGame)))
 	http.Handle("/leaderboard", c.Handler(http.HandlerFunc(server.handleLeaderboard)))
 
+	// Get port from environment (Render provides this)
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = "8080"
 	}
 
-	log.Printf("Server starting on port %s", port)
-	log.Fatal(http.ListenAndServe(":"+port, nil))
+	// Bind to 0.0.0.0 for Render deployment
+	addr := "0.0.0.0:" + port
+	log.Printf("🚀 Server starting on %s", addr)
+	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
 func generatePlayerID() string {

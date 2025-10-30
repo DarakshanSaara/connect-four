@@ -19,7 +19,8 @@ const Leaderboard: React.FC = () => {
   const fetchLeaderboard = async () => {
   try {
     console.log('Fetching leaderboard...');
-    const response = await fetch('http://localhost:8080/leaderboard');
+    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
+    const response = await fetch(`${API_BASE_URL}/leaderboard`);
     
     if (!response.ok) {
       throw new Error(`HTTP error! status: ${response.status}`);

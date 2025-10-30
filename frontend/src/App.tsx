@@ -9,6 +9,9 @@ import GameBoard from './components/GameBoard';
 import Leaderboard from './components/LeaderBoard';
 import './App.css';
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
+const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'wss://connect-four-backend.onrender.com';
+
 // Define TypeScript interfaces
 interface Player {
   id: string;
