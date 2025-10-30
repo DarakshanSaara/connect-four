@@ -1,26 +1,18 @@
-🎯 4 in a Row - Real-Time Multiplayer Game
+## 🎯 4 in a Row - Real-Time Multiplayer Game
 A full-stack, real-time implementation of the classic Connect Four game with competitive AI, built with Go backend and React frontend.
 
-📋 Table of Contents
+## 📋 Table of Contents
 Features
-
 Tech Stack
-
 Architecture
-
 Installation & Setup
-
 API Documentation
-
 Game Rules
-
 Deployment
-
 Project Structure
-
 Contributing
 
-🚀 Features
+## 🚀 Features
 Core Gameplay
 ✅ Real-time multiplayer using WebSockets
 
@@ -54,8 +46,8 @@ Advanced Features
 
 ✅ Comprehensive logging and error handling
 
-🛠 Tech Stack
-Backend
+## 🛠 Tech Stack
+# Backend
 Language: Go 1.19+
 
 Web Framework: Native HTTP with Gorilla WebSocket
@@ -66,7 +58,7 @@ Message Queue: Apache Kafka with kafka-go
 
 Containerization: Docker & Docker Compose
 
-Frontend
+# Frontend
 Framework: React 18 with TypeScript
 
 Build Tool: Vite
@@ -75,7 +67,7 @@ Styling: Modern CSS with CSS Variables
 
 WebSocket: Native WebSocket API
 
-Infrastructure
+# Infrastructure
 Container Runtime: Docker Engine
 
 Orchestration: Docker Compose
@@ -84,7 +76,7 @@ Database: PostgreSQL 15
 
 Message Broker: Apache Kafka with Zookeeper
 
-🏗 Architecture
+## 🏗 Architecture
 ┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
 │   React         │    │   Go Backend     │    │   PostgreSQL    │
 │   Frontend      │◄──►│   WebSocket Hub  │◄──►│   Database      │
@@ -98,7 +90,7 @@ Message Broker: Apache Kafka with Zookeeper
                          │   Analytics     │
                          └─────────────────┘
 
-Data Flow
+# Data Flow
 Client Connection: WebSocket establishes real-time connection
 
 Game Management: Hub manages game states and player matching
@@ -109,14 +101,14 @@ Data Persistence: Game results stored in PostgreSQL
 
 Analytics: Game events streamed to Kafka for metrics
 
-⚙️ Installation & Setup
-Prerequisites
+## ⚙️ Installation & Setup
+# Prerequisites
 Docker & Docker Compose
-
 Git
 
-Quick Start (Recommended)
+# Quick Start (Recommended)
 # Clone the repository
+```
 git clone <repository-url>
 cd connect-four
 
@@ -126,9 +118,11 @@ docker-compose up --build
 # Access the application
 # Frontend: http://localhost:3000
 # Backend API: http://localhost:8080
+```
 
-Manual Setup (Development)
+# Manual Setup (Development)
 Backend Setup
+```
 cd backend
 
 # Install dependencies
@@ -140,8 +134,10 @@ export KAFKA_BROKERS=localhost:9092
 
 # Run the server
 go run cmd/server/main.go
+```
 
 Frontend Setup
+```
 cd frontend
 
 # Install dependencies
@@ -151,22 +147,25 @@ npm install
 npm run dev
 
 # Access at: http://localhost:5173
+```
 
 Database Setup
+```
 # Access PostgreSQL container
 docker-compose exec postgres psql -U user -d connectfour
 
 # Manual table creation (auto-created by app)
 \dt
-
+```
 📚 API Documentation
 WebSocket Endpoints
 Connect to Game
-
+```
 const ws = new WebSocket('ws://localhost:8080/ws?gameId=<gameId>&username=<username>');
+```
 WebSocket Messages
 Make Move
-
+```
 {
   "type": "make_move",
   "content": {
@@ -175,8 +174,9 @@ Make Move
     "column": 3
   }
 }
+```
 Game Update (Server → Client)
-
+```
 {
   "type": "game_update",
   "content": {
@@ -188,28 +188,33 @@ Game Update (Server → Client)
     "winner": -1
   }
 }
-REST API Endpoints
-Create Game
+```
 
+# REST API Endpoints
+Create Game
+```
 POST /game/create
 Content-Type: application/json
 
 {
   "username": "player1"
 }
+```
 Response:
-
+```
 {
   "id": "game_123",
   "board": [...],
   "players": [...],
   "status": "waiting"
 }
+```
 Get Leaderboard
-
+```
 GET /leaderboard
+```
 Response:
-
+```
 [
   {
     "username": "player1",
@@ -218,16 +223,19 @@ Response:
     "draws": 1
   }
 ]
+```
 Health Check
-
+```
 GET /health
+```
 Response:
-
+```
 {
   "status": "healthy"
 }
+```
 
-🎮 Game Rules
+## 🎮 Game Rules
 Basic Rules
 Board: 7 columns × 6 rows grid
 
@@ -263,9 +271,10 @@ Random player starts first
 
 Game continues until win/draw
 
-🚀 Deployment
+## 🚀 Deployment
 Production Deployment
 Environment Variables
+```
 # Backend Environment
 DATABASE_URL=postgres://user:password@postgres:5432/connectfour?sslmode=disable
 KAFKA_BROKERS=kafka:29092
@@ -273,9 +282,9 @@ PORT=8080
 
 # Frontend Environment
 VITE_API_URL=http://your-domain.com:8080
-
+```         
 Docker Compose for Production
-
+```
 version: '3.8'
 services:
   postgres:
@@ -303,17 +312,20 @@ services:
       - "80:80"
     depends_on:
       - backend
+```
 Cloud Deployment Options
 AWS ECS
-
+```
 # ecs-task-definition.yml
 # Define ECS task with all services
+```
 Kubernetes
-
+```
 # kubernetes-deployment.yml
 # K8s manifests for microservices
+```
 
-📁 Project Structure
+## 📁 Project Structure
 
 connect-four/
 ├── backend/
@@ -342,7 +354,7 @@ connect-four/
 
 🔧 Development
 Running Tests
-
+```
 # Backend tests
 cd backend
 go test ./...
@@ -350,16 +362,18 @@ go test ./...
 # Frontend tests  
 cd frontend
 npm test
+```
 Code Quality
-
+```
 # Backend linting
 gofmt -w .
 go vet ./...
 
 # Frontend linting
 npm run lint
+```
 Database Migrations
-
+```
 -- Manual schema creation (auto-handled by application)
 CREATE TABLE games (
     id VARCHAR(50) PRIMARY KEY,
@@ -379,11 +393,12 @@ CREATE TABLE leaderboard (
     draws INTEGER DEFAULT 0,
     updated_at TIMESTAMP NOT NULL
 );
+```
 
-📊 Analytics & Monitoring
+## 📊 Analytics & Monitoring
 Kafka Events
 The application streams game events to Kafka for analytics:
-
+```
 type GameEvent struct {
     Type      string    `json:"type"`    // game_start, move, game_end
     GameID    string    `json:"gameId"`
@@ -392,8 +407,9 @@ type GameEvent struct {
     Data      string    `json:"data"`
     Timestamp time.Time `json:"timestamp"`
 }
+```
 Sample Analytics Queries
-
+```
 -- Most active players
 SELECT username, COUNT(*) as games_played 
 FROM games 
@@ -409,7 +425,9 @@ SELECT username,
        ROUND(wins::decimal / NULLIF(wins + losses + draws, 0) * 100, 2) as win_rate
 FROM leaderboard 
 ORDER BY win_rate DESC;
-🤝 Contributing
+```
+
+## 🤝 Contributing
 Development Workflow
 Fork the repository
 
