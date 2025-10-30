@@ -9,9 +9,6 @@ import GameBoard from './components/GameBoard';
 import Leaderboard from './components/LeaderBoard';
 import './App.css';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
-const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'wss://connect-four-backend.onrender.com';
-
 // Define TypeScript interfaces
 interface Player {
   id: string;
@@ -28,6 +25,10 @@ interface Game {
   winner: number;
 }
 
+// Get API URLs from environment or use Render URLs
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
+const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'wss://connect-four-backend.onrender.com';
+
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'game' | 'leaderboard'>('home');
   const [username, setUsername] = useState('');
@@ -41,7 +42,7 @@ function App() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/game/create', {
+      const response = await fetch(`${API_BASE_URL}/game/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -60,7 +61,7 @@ function App() {
   };
 
   const connectWebSocket = (gameId: string, playerUsername: string) => {
-    const ws = new WebSocket(`ws://localhost:8080/ws?gameId=${gameId}&username=${playerUsername}`);
+    const ws = new WebSocket(`${WS_BASE_URL}/ws?gameId=${gameId}&username=${playerUsername}`);
     
     ws.onopen = () => {
       console.log('WebSocket connected');
@@ -98,11 +99,23 @@ function App() {
   return (
     <div className="app">
       <header className="app-header">
-        <h1>4 in a Row</h1>
-        <nav>
-          <button onClick={() => setCurrentView('home')}>Home</button>
-          <button onClick={() => setCurrentView('leaderboard')}>Leaderboard</button>
-        </nav>
+        <div className="header-content">
+          <h1>4 in a Row</h1>
+          <nav>
+            <button 
+              className="nav-btn"
+              onClick={() => setCurrentView('home')}
+            >
+              Home
+            </button>
+            <button 
+              className="nav-btn"
+              onClick={() => setCurrentView('leaderboard')}
+            >
+              Leaderboard
+            </button>
+          </nav>
+        </div>
       </header>
 
       <main className="app-main">

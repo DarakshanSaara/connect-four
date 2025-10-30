@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
+// Define TypeScript interface for leaderboard entries
 interface LeaderboardEntry {
   username: string;
   wins: number;
@@ -7,8 +8,11 @@ interface LeaderboardEntry {
   draws: number;
 }
 
+// Get API URL from environment or use Render URL
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
+
 const Leaderboard: React.FC = () => {
-  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[] | null>(null);
+  const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,29 +21,28 @@ const Leaderboard: React.FC = () => {
   }, []);
 
   const fetchLeaderboard = async () => {
-  try {
-    console.log('Fetching leaderboard...');
-    const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
-    const response = await fetch(`${API_BASE_URL}/leaderboard`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+    try {
+      console.log('Fetching leaderboard from:', `${API_BASE_URL}/leaderboard`);
+      const response = await fetch(`${API_BASE_URL}/leaderboard`);
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      console.log('Leaderboard data:', data);
+      
+      // Convert null to empty array
+      const safeData = data === null ? [] : data;
+      setLeaderboard(safeData);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+      setError('Failed to load leaderboard');
+      setLeaderboard([]); // Set to empty array on error
+    } finally {
+      setLoading(false);
     }
-    
-    const data = await response.json();
-    console.log('Leaderboard data:', data);
-    
-    // Convert null to empty array
-    const safeData = data === null ? [] : data;
-    setLeaderboard(safeData);
-  } catch (error) {
-    console.error('Error fetching leaderboard:', error);
-    setError('Failed to load leaderboard');
-    setLeaderboard([]); // Set to empty array on error
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   if (loading) {
     return (
