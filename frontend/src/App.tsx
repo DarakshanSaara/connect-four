@@ -26,8 +26,8 @@ interface Game {
 }
 
 // Get API URLs from environment or use Render URLs
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend.onrender.com';
-const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'wss://connect-four-backend.onrender.com';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://connect-four-backend-9jvj.onrender.com';
+const WS_BASE_URL = import.meta.env.VITE_WS_URL || 'wss://connect-four-backend-9jvj.onrender.com';
 
 function App() {
   const [currentView, setCurrentView] = useState<'home' | 'game' | 'leaderboard'>('home');
