@@ -13,28 +13,40 @@ Project Structure
 Contributing
 
 ## 🚀 Features
-Core Gameplay
+# Core Gameplay
 
 ✅ Real-time multiplayer using WebSockets
+
 ✅ Smart competitive bot with strategic AI
+
 ✅ 10-second matchmaking with bot fallback
+
 ✅ Complete game logic with win/draw detection
+
 ✅ Game state persistence with PostgreSQL
+
 ✅ Leaderboard system with player statistics
 
-User Experience
+# User Experience
 
 ✅ Modern dark theme UI with smooth animations
+
 ✅ Responsive design for mobile and desktop
+
 ✅ Real-time game updates without page refresh
+
 ✅ Game reconnection support within 30 seconds
+
 ✅ Win/loss/draw tracking with detailed analytics
 
-Advanced Features
+# Advanced Features
 
 ✅ Kafka integration for game analytics
+
 ✅ Docker containerization for easy deployment
+
 ✅ Health checks and monitoring endpoints
+
 ✅ Comprehensive logging and error handling
 
 ## 🛠 Tech Stack
